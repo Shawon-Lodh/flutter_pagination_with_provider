@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pagination_with_provider/ListController.dart';
+import 'package:pagination_provider/ListController.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -22,31 +22,33 @@ class MyApp extends StatelessWidget {
 }
 
 class DataListView extends StatelessWidget {
+  const DataListView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: ChangeNotifierProvider(
-      create: (context) => ListController(),
-      child: Consumer<ListController>(builder:
-          (BuildContext context, ListController controller, Widget? _) {
-        switch (controller.dataState) {
-          case DataState.Uninitialized:
-            Future(() {
-              controller.fetchData();
-            });
-            return _ListViewWidget(controller.dataList, true);
-          case DataState.Initial_Fetching:
-            return Container();
-          case DataState.More_Fetching:
-          case DataState.Refreshing:
-            return _ListViewWidget(controller.dataList, true);
-          case DataState.Fetched:
-          case DataState.Error:
-          case DataState.No_More_Data:
-            return _ListViewWidget(controller.dataList, false);
-        }
-      }),
-    ));
+          create: (context) => ListController(),
+          child: Consumer<ListController>(builder:
+              (BuildContext context, ListController controller, Widget? _) {
+            switch (controller.dataState) {
+              case DataState.Uninitialized:
+                Future(() {
+                  controller.fetchData();
+                });
+                return _ListViewWidget(controller.dataList, true);
+              case DataState.Initial_Fetching:
+                return Container();
+              case DataState.More_Fetching:
+              case DataState.Refreshing:
+                return _ListViewWidget(controller.dataList, true);
+              case DataState.Fetched:
+              case DataState.Error:
+              case DataState.No_More_Data:
+                return _ListViewWidget(controller.dataList, false);
+            }
+          }),
+        ));
   }
 }
 
@@ -83,13 +85,13 @@ class _ListViewWidget extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(_data[index],
-                                    style: TextStyle(fontSize: 15)),
+                                    style: const TextStyle(fontSize: 15)),
                               )));
                     },
                   ),
                 ))),
         if (_dataState == DataState.More_Fetching)
-          Center(child: CircularProgressIndicator()),
+          const Center(child: CircularProgressIndicator()),
       ],
     );
   }

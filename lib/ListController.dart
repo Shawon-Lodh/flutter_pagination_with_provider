@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pagination_with_provider/APIManager.dart';
+import 'package:pagination_provider/APIManager.dart';
 
 enum DataState {
   Uninitialized,
@@ -12,10 +12,18 @@ enum DataState {
 }
 
 class ListController extends ChangeNotifier {
-  int _currentPageNumber = 0;
-  int _totalPages = 5;
+  int _currentPageNumber = 1;
+  int _limit = 10;
   DataState _dataState = DataState.Uninitialized;
+
+  /// if you finish pagination manually
+  int _totalPages = 5;
   bool get _didLastLoad => _currentPageNumber >= _totalPages;
+
+  /// if you finish pagination automatically
+  // bool _didLastLoad = false;
+
+
   DataState get dataState => _dataState;
   List<String> _dataList = [];
   List<String> get dataList => _dataList;
@@ -26,7 +34,7 @@ class ListController extends ChangeNotifier {
           ? DataState.Initial_Fetching
           : DataState.More_Fetching;
     } else {
-      _currentPageNumber = 0;
+      _currentPageNumber = 1;
       _dataState = DataState.Refreshing;
     }
     notifyListeners();
@@ -34,7 +42,8 @@ class ListController extends ChangeNotifier {
       if (_didLastLoad) {
         _dataState = DataState.No_More_Data;
       } else {
-        List<String> list = await APIManager().fetchData(_currentPageNumber);
+        List<String> list = await APIManager().fetchDataFromInternet(limit: _limit, currentPage: _currentPageNumber);
+        // if(list.length<_limit) _didLastLoad = true;  /// if you finish pagination automatically
         if (_dataState == DataState.Refreshing) {
           _dataList.clear();
         }
