@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pagination_provider/ListController.dart';
+import 'package:flutter_pagination_with_provider/ListController.dart';
 import 'package:provider/provider.dart';
 
 void main() {

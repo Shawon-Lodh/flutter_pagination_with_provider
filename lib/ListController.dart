@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pagination_provider/APIManager.dart';
+import 'package:flutter_pagination_with_provider/APIManager.dart';
 
 enum DataState {
   Uninitialized,
